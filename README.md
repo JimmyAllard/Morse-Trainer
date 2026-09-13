@@ -66,6 +66,8 @@ Build and upload with PlatformIO, run unit tests with Ceedling, and use the Wokw
 │       ├── src/        # Ceedling/Core firmware sources
 │       └── test/       # Ceedling/Unity unit tests
 ├── src/                # Application sources (Arduino/C)
+│   ├── smoke_tests/    # Tests for PlatformIO
+│   └── main.cpp        # Main application
 ├── test/               # PlatformIO/Unit tests
 ├── wokwi.toml          # Wokwi simulator config
 ├── diagram.json        # Wokwi circuit diagram
