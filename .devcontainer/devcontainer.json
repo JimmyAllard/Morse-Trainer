@@ -1,0 +1,51 @@
+{
+  "name": "Morse Trainer",
+  "build": {
+    "dockerfile": "Containerfile",
+    "context": ".."
+  },
+
+  // throwtheswitch/madsciencelab expects the project at /home/dev/project
+  // (its documented `docker run -v <path>:/home/dev/project` usage), so we
+  // mount the workspace there instead of VS Code's default /workspaces/<name>.
+  "workspaceFolder": "/home/dev/project",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/dev/project,type=bind,consistency=cached",
+
+  // Gives the container access to USB serial devices so PlatformIO can
+  // upload/monitor a physically connected Arduino UNO R3.
+  // On Linux this exposes host serial devices directly. On Windows/macOS
+  // with Docker Desktop, USB passthrough needs extra host-side setup
+  // (e.g. usbipd-win on Windows); Wokwi simulation works either way
+  // without any of this.
+  "runArgs": [
+    "--privileged"
+  ],
+  "mounts": [
+    "source=/dev,target=/dev,type=bind"
+  ],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "platformio.platformio-ide",
+        "wokwi.wokwi-vscode",
+        "cschlosser.doxdocgen",
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "streetsidesoftware.code-spell-checker",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "files.associations": {
+          "*.ino": "cpp"
+        },
+        "editor.formatOnSave": true,
+        "C_Cpp.intelliSenseEngine": "default"
+      }
+    }
+  },
+
+  "postCreateCommand": "pio --version && ceedling version && doxygen --version",
+
+  "remoteUser": "dev"
+}
