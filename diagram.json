@@ -1,0 +1,154 @@
+{
+    "version": 1,
+    "author": "Morse Trainer",
+    "editor": "wokwi",
+    "parts": [
+        {
+            "type": "wokwi-arduino-uno",
+            "id": "uno",
+            "top": 0,
+            "left": 0,
+            "attrs": {}
+        },
+        {
+            "type": "wokwi-lcd1602",
+            "id": "lcd1",
+            "top": -140,
+            "left": 20,
+            "attrs": {
+                "pins": "hd44780"
+            }
+        },
+        {
+            "type": "wokwi-buzzer",
+            "id": "buzzer1",
+            "top": 120,
+            "left": 320,
+            "attrs": {
+                "volume": "0.1"
+            }
+        },
+        {
+            "type": "wokwi-pushbutton",
+            "id": "btn1",
+            "top": 120,
+            "left": 420,
+            "attrs": {
+                "color": "red"
+            }
+        },
+        {
+            "type": "wokwi-potentiometer",
+            "id": "pot1",
+            "top": 40,
+            "left": 420,
+            "attrs": {
+                "value": "50"
+            }
+        }
+    ],
+    "connections": [
+        [
+            "uno:12",
+            "lcd1:RS",
+            "green",
+            []
+        ],
+        [
+            "uno:11",
+            "lcd1:E",
+            "green",
+            []
+        ],
+        [
+            "uno:5",
+            "lcd1:D4",
+            "green",
+            []
+        ],
+        [
+            "uno:4",
+            "lcd1:D5",
+            "green",
+            []
+        ],
+        [
+            "uno:3",
+            "lcd1:D6",
+            "green",
+            []
+        ],
+        [
+            "uno:2",
+            "lcd1:D7",
+            "green",
+            []
+        ],
+        [
+            "lcd1:RW",
+            "uno:GND.1",
+            "black",
+            []
+        ],
+        [
+            "lcd1:VSS",
+            "uno:GND.1",
+            "black",
+            []
+        ],
+        [
+            "lcd1:VDD",
+            "uno:5V",
+            "red",
+            []
+        ],
+        [
+            "lcd1:A",
+            "uno:5V",
+            "red",
+            []
+        ],
+        [
+            "lcd1:K",
+            "uno:GND.1",
+            "black",
+            []
+        ],
+        [
+            "lcd1:V0",
+            "uno:GND.1",
+            "black",
+            []
+        ],
+        [
+            "uno:9",
+            "buzzer1:1",
+            "green",
+            []
+        ],
+        [
+            "buzzer1:2",
+            "pot1:SIG",
+            "blue",
+            []
+        ],
+        [
+            "pot1:GND",
+            "uno:GND.2",
+            "black",
+            []
+        ],
+        [
+            "btn1:1.l",
+            "uno:8",
+            "green",
+            []
+        ],
+        [
+            "btn1:2.l",
+            "uno:GND.2",
+            "black",
+            []
+        ]
+    ]
+}
