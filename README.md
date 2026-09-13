@@ -34,10 +34,10 @@ TODO
 
 This project is developed inside a **VS Code Dev Container**, so no local toolchain installation is required beyond Docker and VS Code.
 
-- **PlatformIO** — build system and Arduino framework integration
-- **Ceedling** — C unit testing (Unity/CMock) for hardware-independent Morse logic
-- **Doxygen** — source code documentation generation
-- **Wokwi** — in-editor circuit simulation (Arduino UNO + buzzer + potentiometer + button + LCD1602)
+- [**PlatformIO**](https://docs.platformio.org/en/latest/) — build system and Arduino framework integration
+- [**Ceedling**](https://throwtheswitch.github.io/Ceedling/latest/) — C unit testing (Unity/CMock) for hardware-independent Morse logic
+- [**Doxygen**](https://www.doxygen.nl/manual/docblocks.html) — source code documentation generation
+- [**Wokwi**](https://docs.wokwi.com/?utm_source=wokwi) — in-editor circuit simulation (Arduino UNO + buzzer + potentiometer + button + LCD1602)
 
 ### Getting started
 
@@ -58,6 +58,7 @@ Build and upload with PlatformIO, run unit tests with Ceedling, and use the Wokw
 .
 ├── .devcontainer/     # Dev container configuration
 ├── .vscode/           # VS Code + PlatformIO settings
+├── include/           # Application header (Arduino/C)
 ├── src/               # Application source (Arduino/C)
 ├── test/              # Ceedling/Unity unit tests
 ├── docs/              # Doxygen output (generated, ignored by git)
