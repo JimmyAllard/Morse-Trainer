@@ -28,7 +28,22 @@ This project uses parts from an Arduino UNO R3 "super starter kit." Datasheets b
 
 ### Wiring
 
-TODO
+Pin assignments are defined once in `include/pins.h` and mirrored in `diagram.json` for the Wokwi simulation.
+
+| Signal | Arduino UNO pin |
+|---|---|
+| LCD RS | D12 |
+| LCD E (enable) | D11 |
+| LCD D4 | D5 |
+| LCD D5 | D4 |
+| LCD D6 | D3 |
+| LCD D7 | D2 |
+| Buzzer signal | D9 (PWM) |
+| Button | D8 (`INPUT_PULLUP`, active LOW) |
+
+- **LCD1602** is wired in **4-bit direct mode** (no I2C backpack): `RW` → GND, `VSS` → GND, `VDD`/`A` (backlight) → 5V, `K` → GND, `V0` (contrast) → GND for maximum contrast. If your module needs adjustable contrast, wire `V0` through a separate trim potentiometer instead.
+- **Buzzer volume potentiometer** is wired as a hardware rheostat in series with the buzzer — one leg to the buzzer's negative terminal, the wiper to GND — rather than read by software. Turning it changes the buzzer's loudness directly; no analog pin or code is involved.
+- **Button** connects one leg to D8 and the other to GND. No external pull-up resistor is needed since the firmware uses the ATmega328P's internal pull-up (`INPUT_PULLUP`).
 
 ## Development Environment
 
@@ -50,27 +65,77 @@ cd morse-trainer
 code .
 ```
 
+The first container build installs PlatformIO, Ceedling, and Doxygen, so it can take a few minutes. Once it's done, confirm the toolchain is ready:
+
+```bash
+pio --version
+ceedling version
+doxygen --version
+```
+
+From there, this is the day-to-day workflow:
+
+1. **Run the unit tests** — pure Morse logic in `lib/morse-core`, no hardware needed:
+```bash
+   ceedling test:all
+```
+2. **Build the firmware**:
+```bash
+   pio run -e uno
+```
+3. **Simulate on Wokwi** — no physical board required:
+   - Command Palette → `Wokwi: Start Simulator` (requires a free license, activated once via `Wokwi: Request a New License`), or
+   - `wokwi-cli .` for a headless run (requires a `WOKWI_CLI_TOKEN` from [wokwi.com/dashboard/ci](https://wokwi.com/dashboard/ci))
+4. **Flash to a real UNO**, if one is connected:
+```bash
+   pio run -e uno -t upload
+```
+   On Windows with Docker Desktop, USB devices aren't passed through to the container automatically — see [usbipd-win](https://github.com/dorssel/usbipd-win) to share the board into WSL2 first.
+5. **Generate documentation**:
+```bash
+   doxygen Doxyfile
+```
+   Output lands in `docs/html/index.html`.
+
+To run all of the above in one go — test, document, build, then flash a connected board or fall back to a headless Wokwi simulation automatically — use:
+
+```bash
+./scripts/pipeline.sh
+```
+
+There are also isolated environments under `src/smoke_tests/` for bringing up one peripheral at a time before wiring everything together, e.g.:
+
+```bash
+pio run -e lcd_test -t upload      # or buzzer_test / button_test
+```
+
 Build and upload with PlatformIO, run unit tests with Ceedling, and use the Wokwi extension to simulate the circuit directly in VS Code without physical hardware.
 
 ## Project Structure
 
 ```
 .
-├── .devcontainer/      # Dev container configuration
-├── .vscode/            # VS Code + PlatformIO settings
-├── docs/               # Doxygen output (generated, ignored by git)
-├── include/            # Application headers (Arduino/C)
-├── lib/               
+├── .devcontainer/          # Dev container configuration (Containerfile, devcontainer.json)
+├── .vscode/                # VS Code + PlatformIO settings
+├── docs/                   # Doxygen output (generated, ignored by git)
+├── include/                # Shared application headers (e.g. pins.h)
+├── lib/
 │   └── morse-core/
-│       ├── include/    # Ceedling/Core firmware headers
-│       ├── src/        # Ceedling/Core firmware sources
-│       └── test/       # Ceedling/Unity unit tests
-├── src/                # Application sources (Arduino/C)
-│   ├── smoke_tests/    # Tests for PlatformIO
-│   └── main.cpp        # Main application
-├── test/               # PlatformIO/Unit tests
-├── wokwi.toml          # Wokwi simulator config
-├── diagram.json        # Wokwi circuit diagram
-├── platformio.ini      # PlatformIO project configuration
-└── README.md
+│       ├── include/        # Pure C headers for the Morse logic
+│       ├── src/            # Pure C implementation (hardware-independent)
+│       └── test/
+│           └── support/    # Ceedling test support files
+├── scripts/
+│   └── pipeline.sh         # test -> docs -> build -> flash/simulate, all in one
+├── src/
+│   ├── smoke_tests/        # Isolated per-peripheral test sketches (LCD/buzzer/button)
+│   └── main.cpp            # Main application firmware
+├── test/                   # PlatformIO's own test runner (`pio test`) — separate from Ceedling
+├── .gitignore
+├── diagram.json            # Wokwi circuit diagram
+├── Doxyfile                # Doxygen configuration
+├── platformio.ini          # PlatformIO project configuration
+├── project.yml             # Ceedling project configuration
+├── README.md
+└── wokwi.toml              # Wokwi simulator config
 ```
