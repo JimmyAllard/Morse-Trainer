@@ -56,14 +56,19 @@ Build and upload with PlatformIO, run unit tests with Ceedling, and use the Wokw
 
 ```
 .
-├── .devcontainer/     # Dev container configuration
-├── .vscode/           # VS Code + PlatformIO settings
-├── include/           # Application header (Arduino/C)
-├── src/               # Application source (Arduino/C)
-├── test/              # Ceedling/Unity unit tests
-├── docs/              # Doxygen output (generated, ignored by git)
-├── wokwi.toml         # Wokwi simulator config
-├── diagram.json       # Wokwi circuit diagram
-├── platformio.ini     # PlatformIO project configuration
+├── .devcontainer/      # Dev container configuration
+├── .vscode/            # VS Code + PlatformIO settings
+├── docs/               # Doxygen output (generated, ignored by git)
+├── include/            # Application headers (Arduino/C)
+├── lib/               
+│   └── morse-core/
+│       ├── include/    # Ceedling/Core firmware headers
+│       ├── src/        # Ceedling/Core firmware sources
+│       └── test/       # Ceedling/Unity unit tests
+├── src/                # Application sources (Arduino/C)
+├── test/               # PlatformIO/Unit tests
+├── wokwi.toml          # Wokwi simulator config
+├── diagram.json        # Wokwi circuit diagram
+├── platformio.ini      # PlatformIO project configuration
 └── README.md
 ```
