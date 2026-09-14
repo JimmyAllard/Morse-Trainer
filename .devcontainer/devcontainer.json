@@ -1,7 +1,7 @@
 {
   "name": "Morse Trainer",
   "build": {
-    "dockerfile": "Containerfile",
+    "dockerfile": "containerfile",
     "context": ".."
   },
 
