@@ -1,0 +1,48 @@
+# Dev container image for the Morse Trainer (Arduino UNO R3) project
+#
+# Base: throwtheswitch/madsciencelab, which already ships Ceedling, Unity,
+# CMock, GCC, and friends, ready to run C unit tests. We extend it with:
+#   - PlatformIO (build/upload for the actual Arduino target)
+#   - Doxygen + Graphviz (documentation generation)
+#   - Serial port access for the "dev" user (uploading to a real UNO)
+# Wokwi simulation and PlatformIO IDE integration are provided by VS Code
+# extensions declared in devcontainer.json — nothing to install for those here.
+
+FROM throwtheswitch/madsciencelab:latest
+
+# The base image runs as the non-root "dev" user by default.
+# Switch to root only for package installation.
+USER root
+ENV DEBIAN_FRONTEND=noninteractive
+
+# --- Additional system dependencies --------------------------------------
+# curl/ca-certificates : minideb ships minimal packages; needed for
+#                         PlatformIO's own downloads and general tooling
+# python3 + pip         : required by PlatformIO Core
+# doxygen + graphviz    : documentation generation (graphviz for graphs)
+# usbutils              : USB/serial device inspection for board uploads
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        curl \
+        ca-certificates \
+        git \
+        python3 \
+        python3-pip \
+        python3-venv \
+        doxygen \
+        graphviz \
+        usbutils \
+    && rm -rf /var/lib/apt/lists/*
+
+# --- PlatformIO Core -------------------------------------------------------
+RUN pip3 install --no-cache-dir --break-system-packages platformio
+
+# --- Serial port access -----------------------------------------------------
+# minideb doesn't guarantee a "dialout" group exists, so create it if needed,
+# then add the "dev" user to it for /dev/ttyACM*/ttyUSB* access.
+RUN (getent group dialout || groupadd dialout) && usermod -aG dialout dev
+
+USER dev
+WORKDIR /home/dev/project
+
+# Sanity check during build (fails fast if a toolchain is broken)
+RUN pio --version && ceedling version && doxygen --version

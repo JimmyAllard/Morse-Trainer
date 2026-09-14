@@ -1,0 +1,59 @@
+# Doxyfile for the Morse Trainer (Arduino UNO R3) project.
+# This is a trimmed config — any option not listed here falls back to
+# Doxygen's built-in default. Regenerate docs with: doxygen Doxyfile
+
+#---------------------------------------------------------------------------
+# Project
+#---------------------------------------------------------------------------
+PROJECT_NAME           = "Morse Trainer"
+PROJECT_BRIEF          = "Arduino UNO R3 Morse code trainer"
+OUTPUT_LANGUAGE        = English
+
+# Use the README as the generated docs' front page.
+USE_MDFILE_AS_MAINPAGE = README.md
+
+#---------------------------------------------------------------------------
+# Input
+#---------------------------------------------------------------------------
+INPUT                  = README.md \
+                          src \
+                          include \
+                          lib
+
+RECURSIVE              = YES
+FILE_PATTERNS           = *.c *.h *.cpp *.hpp *.ino
+EXTENSION_MAPPING       = ino=C++
+
+# Skip generated/build artifacts and vendored test scaffolding.
+EXCLUDE_PATTERNS       = */build/* \
+                          */.pio/* \
+                          */docs/* \
+                          */test/*
+
+EXTRACT_ALL             = YES
+EXTRACT_STATIC          = YES
+
+#---------------------------------------------------------------------------
+# Output
+#---------------------------------------------------------------------------
+OUTPUT_DIRECTORY        = docs
+
+GENERATE_HTML           = YES
+HTML_OUTPUT             = html
+
+GENERATE_LATEX          = NO
+
+#---------------------------------------------------------------------------
+# Diagrams (Graphviz is installed in the dev container)
+#---------------------------------------------------------------------------
+HAVE_DOT                = YES
+CALL_GRAPH              = YES
+CALLER_GRAPH            = YES
+DOT_IMAGE_FORMAT        = svg
+INTERACTIVE_SVG         = YES
+
+#---------------------------------------------------------------------------
+# Misc
+#---------------------------------------------------------------------------
+QUIET                   = NO
+WARN_IF_UNDOCUMENTED    = YES
