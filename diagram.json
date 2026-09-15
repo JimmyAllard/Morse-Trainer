@@ -16,7 +16,7 @@
             "top": -140,
             "left": 20,
             "attrs": {
-                "pins": "hd44780"
+                "pins": "full"
             }
         },
         {
