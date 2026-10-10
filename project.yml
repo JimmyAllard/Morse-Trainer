@@ -7,7 +7,7 @@
 
 ---
 :project:
-  :name: "Example Project"
+  :name: "Morse-Trainer"
 
   # how to use ceedling. If you're not sure, leave this as `gem` and `?`
   :which_ceedling: gem
@@ -97,14 +97,14 @@
 # see documentation for the many options for specifying this.
 :paths:
   :test:
-    - +:lib/morse-core/test/**
-    - -:lib/morse-core/test/support
+    - +:lib/morse_core/test/**
+    - -:lib/morse_core/test/support
   :source:
-    - lib/morse-core/src/**
+    - lib/morse_core/src/**
   :include:
-    - lib/morse-core/include/** # In simple projects, this entry often duplicates :source
+    - lib/morse_core/include/** # In simple projects, this entry often duplicates :source
   :support:
-    - lib/morse-core/test/support
+    - lib/morse_core/test/support
   :libraries: []
 
 # You can even specify specific files to add or remove from your test
